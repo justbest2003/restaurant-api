@@ -1,9 +1,10 @@
 const User = require("../models/user.model");
 const Role = require("../models/role.model");
+const { Op } = require("sequelize");
 
 checkDuplicateUsernameOrEmail = async (req, res, next) => {
   //Check Username
-  await Username.findOne({
+  await User.findOne({
     where: {
       username: req.body.username,
     },
