@@ -54,3 +54,54 @@ exports.signup = async (req, res) => {
       });
     });
 };
+
+//Signin
+exports.signin = async (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    res.status(400).send({
+      message: "Please provide all required fields!",
+    });
+    return;
+  }
+
+  // SQL : SELECT * FROM User WHERE username = "username"
+  await User.findOne({ where: { username: username } })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send({
+          message: "User not found.",
+        });
+      }
+      const passwordIsValid = bcrypt.compareSync(password, user.password);
+      if (!passwordIsValid) {
+        return res.status(401).send({
+          accessToken: null,
+          message: "Invalid Password!",
+        });
+      }
+      const token = jwt.sign({ id: user.username }, config.secret, {
+        expiresIn: 86400, // 24 hours // 86400
+      });
+
+      const authorities = [];
+      user.getRoles().then((roles) => {
+        for (let i = 0; i < roles.length; i++) {
+          authorities.push("ROLES_" + roles[i].name.toUpperCase());
+        }
+        res.status(200).send({
+          id: user.username,
+          username: user.username,
+          email: user.email,
+          roles: authorities,
+          accessToken: token,
+        });
+      });
+    })
+    .catch((error) => {
+      res.status(500).send({
+        message:
+          error.message || "Something error occured while creating the user.",
+      });
+    });
+};
