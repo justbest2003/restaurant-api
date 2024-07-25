@@ -35,3 +35,5 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log("Listening to http://localhost:" + PORT);
 });
+
+//http://localhost:5000/api/v1/auth/signin

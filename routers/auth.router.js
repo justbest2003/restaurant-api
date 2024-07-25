@@ -10,8 +10,13 @@ router.use((req, res, next) => {
   );
   next();
 });
+
 //Auth
-router.post("/signup",[verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted], authController.signup);
-router.post("/signin", [],authController.signin);
+router.post(
+  "/signup",
+  [verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted],
+  authController.signup
+);
+router.post("/signin", authController.signin);
 
 module.exports = router;

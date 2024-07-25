@@ -1,3 +1,3 @@
 module.exports = {
-    "secret" : "testauth-secret-key"
+  secret: "angkan-api-secret-key",
 };
