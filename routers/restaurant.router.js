@@ -12,7 +12,7 @@ router.post(
 );
 
 //Get All restaurant
-router.get("/", [authJwt.verifyToken], restaurantController.getAll);
+router.get("/", restaurantController.getAll);
 
 //Get a restaurant by ID
 router.get("/:id", [authJwt.verifyToken], restaurantController.getById);
